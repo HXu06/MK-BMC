@@ -75,7 +75,7 @@ run the following code:
 -   grid: (grid+1) values are given to choose *ρ*, default is 10.
 
 -   kfold: kfold cross-validation is used to choose *ρ*, default is 5.
-    \### Output
+### Output
 
 -   The results are output as a list named as follows:
 
