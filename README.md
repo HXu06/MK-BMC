@@ -42,11 +42,11 @@ run the following code:
     subOTUtable[1:5,1:10]
 
     ##   OTU1883 OTU3114 OTU1483 OTU2576 OTU4408 OTU2013 OTU2859 OTU1671 OTU73 OTU2510
-    ## 1       0       0       0       4       0       0      28       1     0       0
-    ## 2       0       0       0       3       0       0       2      22     0       0
-    ## 3       1       0       0       1       0       0       0       0     0       0
-    ## 4       0       0       2      17       0       0       0       0     0       0
-    ## 5       0       0       0      10       0       0       0       3     0       0
+    ## 1       0       0       0      79       2       0       0       7     0       0
+    ## 2       0       0       0       0       0       0       0       5     7       0
+    ## 3       0       6       0       0       0       0       0       5     0       0
+    ## 4       0       1       0       0       0       0       0       0     0       0
+    ## 5       0       6       0       0       0       0       0       1     0       0
 
 -   subtree: a phylogenetic tree that captures evolutionary
     relationships among species. OTUs that are close on a phylogenetic
@@ -65,9 +65,11 @@ run the following code:
 
 -   y: a binary outcome for training data.
 
--   tran\_ind: index of training data in subOTUtable.
+-   Lcov: kernel list for covariates for both training and testing data
 
--   test\_ind: index of testin data in subOTUtable.
+-   tran\_ind: index of training data in subOTUtable and Lcov.
+
+-   test\_ind: index of testin data in subOTUtable and Lcov.
 
 -   rho\_ls: a grid of rho\_ls, default is data-driven, or you can give
     a grid by yourself.
@@ -75,13 +77,13 @@ run the following code:
 -   grid: (grid+1) values are given to choose *ρ*, default is 10.
 
 -   kfold: kfold cross-validation is used to choose *ρ*, default is 5.
-### Output
+    \### Output
 
 -   The results are output as a list named as follows:
 
 <!-- -->
 
-    resl <- mklpre(subOTUtable = subOTUtable, subtree = subtree, y=y,  tran_ind = tran_ind, test_ind= test_ind)
+    resl <- mklpre(subOTUtable = subOTUtable, subtree = subtree, y=y,  Lcov = Lcov,tran_ind = tran_ind, test_ind= test_ind)
     names(resl)
 
     ## [1] "weight"     "outcome_pr" "rho"
@@ -96,20 +98,21 @@ run the following code:
     resl$weight
 
     ##           [,1]
-    ## [1,] 0.1389820
-    ## [2,] 0.5409325
-    ## [3,] 0.1597585
-    ## [4,] 0.1603270
+    ## [1,] 0.1973882
+    ## [2,] 0.1950701
+    ## [3,] 0.2010016
+    ## [4,] 0.1955624
+    ## [5,] 0.2109777
 
     resl$outcome_pr[1:10]
 
-    ##  [1] 0.016260404 0.047913192 0.040567761 0.030547601 0.906012706 0.006580912
-    ##  [7] 0.020064559 0.020572516 0.010107406 0.978007376
+    ##  [1] 0.81457366 0.02710860 0.90090740 0.15995356 0.09322434 0.99144924
+    ##  [7] 0.15930572 0.91354733 0.35377634 0.52018647
 
     resl$rho
 
-    ## [1] 2188.769
+    ## [1] 52623.8
 
     pROC::roc(y_test, resl$outcome_pr, levels = c(0,1), direction = '<')$auc
 
-    ## Area under the curve: 0.893
+    ## Area under the curve: 0.7523
