@@ -3,11 +3,12 @@
 #subOTUtable: whole OTU table for both training and testing data
 #subtree: phylogenetic tree
 #y: binary outcome for training data
+#Lcov: kernel list for covariates for both training and testing data
 #tran_ind: index of training data in subOTUtable
 #test_ind: index of testin data in subOTUtable
 #rho_ls: given grid of rho_ls, default is NA
 
-mklpre<-function(subOTUtable, subtree, y, tran_ind, test_ind, rho_ls= NA, grid = 10, kfold=5){
+mklpre<-function(subOTUtable, subtree, y, Lcov,tran_ind, test_ind, rho_ls= NA, grid = 10, kfold=5){
   n_sam = nrow(subOTUtable)
   
   ind1 = which(y==1)
@@ -71,15 +72,11 @@ mklpre<-function(subOTUtable, subtree, y, tran_ind, test_ind, rho_ls= NA, grid =
   }
   names(distmat_ls) = names(Kmat_ls) = c("W-BC","W-Unweighted","W-weighted","W-Hamming")  
   
-  
+  Kmat_ls = c(Kmat_ls,list(Lcov))
   #########################
   
   n_ker = length(Kmat_ls) # number of kernels
-  #new_w = rep(1/n_ker, n_ker)
-  
-  
-  
-  
+
   train_Kmat_ls=list()
   for (ll in 1:n_ker) { 
     train_Kmat_ls[[ll]]=Kmat_ls[[ll]][tran_ind,tran_ind]#######training kernel matrix
